@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nefs Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-out forwards;
+    }
+    .fade-out {
+      animation: fadeOut 1s ease-out forwards;
+    }
+    /* Custom scrollbar */
+    .custom-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: #4b5563 #1e1e2f;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #1e1e2f;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #4b5563;
+      border-radius: 4px;
+    }
+    .closed-service {
+      opacity: 0.6;
+      position: relative;
+    }
+    .closed-service::after {
+      content: "✖️";
+      position: absolute;
+      right: 0;
+    }
+    /* Center title */
+    .title-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#0f0f1f] to-[#1e1e2f] text-white font-sans min-h-screen flex flex-col items-center justify-center p-4">
+  <!-- Splash Intro -->
+  <div id="splash" class="text-center max-w-md fade-in">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-4">Halo! 👋</h1>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      Apakah kamu butuh aplikasi premium atau layanan digital lain?<br/>
+      Yuk cek yang aku sediain.
+    </p>
+  </div>
+  <!-- Main Content -->
+  <div id="mainContent" class="hidden fade-in w-full flex flex-col items-center">
+    <!-- Centered Title -->
+    <div class="title-container">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6 text-center">
+        Nefs Store
+      </h1>
+    </div>
+    
+    <div class="bg-[#1e1e2f] p-6 rounded-xl shadow-xl w-full max-w-md text-left">
+      <p class="text-gray-400 mb-4 text-sm">Solusi cepat & rapi buat kebutuhan digital kamu.</p>
+      <div class="space-y-4 text-sm text-white">
+        <div class="flex items-center gap-3 cursor-pointer hover:scale-105 transition" onclick="openDetailFromMain('Bug')">🐞 Jasa Bug & Exploit (legal/edukatif)</div>
+        <div class="flex items-center gap-3 cursor-pointer hover:scale-105 transition" onclick="openDetailFromMain('Unban')">🔒 Ban / Unban Akun Platform</div>
+        <div class="flex items-center gap-3 cursor-pointer hover:scale-105 transition" onclick="openDetailFromMain('Bot')">🤖 Sewa Bot 24 Jam (WA/Telegram)</div>
+        <div class="flex items-center gap-3 closed-service">📱 Nokos WA & Telegram</div>
+        <div class="flex items-center gap-3 cursor-pointer hover:scale-105 transition" onclick="openApkList()">📦 Aplikasi & Langganan Premium</div>
+        <div class="flex items-center gap-3 cursor-pointer hover:scale-105 transition" onclick="openTopupList()">🎮 Top Up Game (Fast & Murah)</div>
+      </div>
+      <a href="https://wa.me/6285374128738?text=Halo%20kak%20saya%20mau%20beli%20dong%20apakah%20masih%20ada%3F" target="_blank" class="block bg-green-500 text-center mt-6 py-2 rounded-full font-semibold hover:bg-green-600 transition">💬 WhatsApp Admin</a>
+      <a href="https://t.me/NaufalTzye" target="_blank" class="block bg-blue-500 text-center mt-4 py-2 rounded-full font-semibold hover:bg-blue-600 transition">📨 Telegram Admin</a>
+    </div>
+  </div>
+  <!-- APK Modal -->
+  <div id="apkModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-[#1e1e2f] text-white p-6 rounded-xl shadow-xl max-w-sm w-full relative">
+      <h2 class="text-xl font-bold mb-4">📦 Pilih Layanan Premium</h2>
+      <ul class="space-y-3 text-sm">
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('CapCut', 'apk')">✂️ CapCut</li>
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('Alight Motion', 'apk')">🎞️ Alight Motion</li>
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('Canva', 'apk')">📚 Canva Pro</li>
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('Spotify', 'apk')">🎵 Spotify</li>
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('Bstation', 'apk')">📺 Bstation</li>
+      </ul>
+      <button onclick="closeModal()" class="mt-6 bg-pink-500 hover:bg-pink-600 transition px-4 py-2 rounded-full w-full font-semibold">Tutup</button>
+    </div>
+  </div>
+  <!-- Top Up Modal -->
+  <div id="topupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-[#1e1e2f] text-white p-6 rounded-xl shadow-xl max-w-sm w-full relative">
+      <h2 class="text-xl font-bold mb-4">🎮 Pilih Game</h2>
+      <ul class="space-y-3 text-sm">
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('Roblox', 'topup')">🧱 Roblox</li>
+        <li class="cursor-pointer hover:underline" onclick="openDetailFromList('Free Fire', 'topup')">🔥 Free Fire</li>
+      </ul>
+      <button onclick="closeModal()" class="mt-6 bg-pink-500 hover:bg-pink-600 transition px-4 py-2 rounded-full w-full font-semibold">Tutup</button>
+    </div>
+  </div>
+  <!-- Detail Modal -->
+  <div id="apkDetailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-[#1e1e2f] text-white p-6 rounded-xl shadow-xl max-w-sm w-full relative max-h-[80vh] flex flex-col">
+      <h2 id="apkTitle" class="text-xl font-bold mb-4"></h2>
+      <div class="overflow-y-auto custom-scroll flex-grow">
+        <pre id="apkDesc" class="text-sm text-gray-300 whitespace-pre-line pr-2"></pre>
+      </div>
+      <button onclick="backToPreviousList()" class="mt-6 bg-blue-500 hover:bg-blue-600 transition px-4 py-2 rounded-full w-full font-semibold">⬅️ Kembali</button>
+    </div>
+  </div>
+  <script>
+    let previousList = null;
+    
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('fade-out');
+      setTimeout(() => {
+        document.getElementById('splash').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+      }, 1000);
+    }, 3500);
+    
+    function openApkList() {
+      previousList = 'apk';
+      document.getElementById('apkModal').classList.remove('hidden');
+    }
+    
+    function openTopupList() {
+      previousList = 'topup';
+      document.getElementById('topupModal').classList.remove('hidden');
+    }
+    
+    function closeModal() {
+      document.getElementById('apkModal').classList.add('hidden');
+      document.getElementById('topupModal').classList.add('hidden');
+    }
+    
+    function openDetailFromMain(name) {
+      previousList = 'main';
+      openDetail(name);
+    }
+    
+    function openDetailFromList(name, listType) {
+      previousList = listType;
+      openDetail(name);
+    }
+    
+    function openDetail(name) {
+      const data = {
+        "CapCut": `Private:\n\n4 Hari: Rp10.000\n\n1 Minggu: Rp15.000\n\n1 Bulan: Rp22.000`,
+        "Alight Motion": `Sharing (1 Tahun): Rp4.000\n\nPrivate:\n\nAndroid Only: Rp10.000\n\nAndroid & iOS: Rp12.000`,
+        "Canva": `Member:\n\n1 Hari: Rp1.200\n\n3 Hari: Rp2.500\n\n7 Hari: Rp4.000\n\n1 Bulan: Rp5.000\n\n2 Bulan: Rp10.000\n\n3 Bulan: Rp11.000\n\n4 Bulan: Rp12.000\n\n5 Bulan: Rp13.000\n\n6 Bulan: Rp15.000\n\n1 Tahun: Rp20.000\n\n\nDesigner +Rp2.500 (Upload font & template pribadi)\n\nCanva Owner: Rp10.000/bulan\n\nCanva Admin: Rp8.000/bulan\n\nLifetime (Garansi 6 Bulan): Rp20.000`,
+        "Spotify": `Indplan Full Garansi:\n\n1 Bulan: Rp22.000\n\n3 Bulan: Rp52.000\n\nFamplan Full Garansi:\n\n1 Bulan: Rp21.000\n\n2 Bulan: Rp31.000\n\n3 Bulan: Rp50.000\n\nIndplan Korea:\n\n1 Bulan: Rp12.000\n\n2 Bulan: Rp20.000\n\n3 Bulan: Rp25.000\n\n(*Beberapa musik mungkin tidak bisa diputar)`,
+        "Bstation": `Sharing:\n\n7 Hari: Rp5.000\n\n1 Bulan: Rp10.000\n\n3 Bulan: Rp13.000\n\n1 Tahun: Rp17.000 (Garansi 6 bulan)\n\nPrivate:\n\n1 Bulan: Rp42.000`,
+        "Roblox": `Robux via Login:\n\n450r + premium: Rp84.000\n\n\nRobux Reguler:\n\n80r: Rp20.000\n\n160r: Rp42.000\n\n240r: Rp54.000\n\n320r: Rp70.000\n\n400r: Rp82.000\n\n500r: Rp84.000\n\n800r: Rp149.000\n\n1000r: Rp155.000\n\n1500r: Rp226.000\n\n1700r: Rp294.000\n\n2000r: Rp295.000\n\n2500r: Rp366.000\n\n\nGamepass:\n\n100 R$: Rp15.000\n\nNote Gamepass:\n\nKirim link Gamepass.\n\nPembelian bisa dicek di roblox.com/transactions.\n\n\nCatatan premium:\n\nHanya bisa dibeli 1x dalam 1 bulan\n\n\nNote Vilog:\n\nOrder standby 10 menit - 1 hari\n\nNo rush order Format Order > Roblox`,
+        "Free Fire": `DM FREE FIRE:\n\n30 💎: Rp9.000\n\n50 💎: Rp12.000\n\n80 💎: Rp18.000\n\n100 💎: Rp20.000\n\n140 💎: Rp25.000\n\n210 💎: Rp33.000\n\n250 💎: Rp40.000\n\n300 💎: Rp47.000\n\n355 💎: Rp50.000\n\n360 💎: Rp53.000\n\n405 💎: Rp60.000\n\n425 💎: Rp63.000\n\n500 💎: Rp70.000\n\n545 💎: Rp78.000\n\n600 💎: Rp85.000\n\n720 💎: Rp95.000\n\n1000 💎: Rp135.000`,
+        "Bug": `🐞 Jasa Bug & Exploit (legal/edukatif)\n\nHarga: Rp1.000 per nomor\n\nLayanan untuk tujuan edukasi dan legal saja.`,
+        "Unban": `🔒 Ban / Unban Akun Platform\n\nHarga: Rp2.000 per nomor\n\nHarga bisa bervariasi tergantung kesulitan nomor.`,
+        "Bot": `🤖 Sewa Bot 24 Jam (WA/Telegram)\n\nHarga:\n\n- Mingguan: Rp3.000/minggu\n- Bulanan: Rp6.000/bulan\n\nBot siap pakai 24 jam dengan fitur lengkap.`
+      };
+      
+      document.getElementById('apkModal').classList.add('hidden');
+      document.getElementById('topupModal').classList.add('hidden');
+      document.getElementById('apkDetailModal').classList.remove('hidden');
+      document.getElementById('apkTitle').textContent = "💎 " + name;
+      document.getElementById('apkDesc').textContent = data[name];
+    }
+    
+    function backToPreviousList() {
+      document.getElementById('apkDetailModal').classList.add('hidden');
+      if (previousList === 'apk') {
+        document.getElementById('apkModal').classList.remove('hidden');
+      } else if (previousList === 'topup') {
+        document.getElementById('topupModal').classList.remove('hidden');
+      }
+      // For items from main list, don't show any list - just stay on main content
+    }
+  </script>
+</body>
+</html>
